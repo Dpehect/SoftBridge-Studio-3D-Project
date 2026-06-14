@@ -1,0 +1,188 @@
+:root {
+  --colour-dull-black: rgba(0, 0, 0, 0.3);
+  --colour-white: #f1e6d5;
+  --colour-light: #e8d5b7;
+  --colour-grey: #949494;
+  --colour-medgrey: #686464;
+  --colour-med: #96573b;
+  --colour-darkgrey: #302f2f;
+  --colour-dark: #442214;
+  --colour-black: #2d1810;
+  --colour-red: #ed1f2c;
+  --colour-green: #7a9d54;
+  --colour-dark-green: rgb(71, 99, 41);
+
+  --ftoilet-dark: #361626;
+  --ftoilet-light: #68394f;
+  --ftoilet-white: #9e637f;
+  --mtoilet-dark: #171c35;
+  --mtoilet-light: #38426b;
+  --mtoilet-white: #586597;
+
+  --trans-time: 3.8s;
+  --mobile-size: 768px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: none;
+  border: none;
+
+  scrollbar-width: thin;
+  scrollbar-color: var(--colour-dark) var(--colour-med);
+
+  user-select: none;
+  -webkit-user-select: none; /* Safari and Chrome */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+
+  font-family: "Nunito", sans-serif;
+  touch-action: manipulation;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 1000;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Nunito";
+  src: url("/fonts/Nunito-Italic-VariableFont_wght.ttf") format("truetype");
+  font-weight: 100 1000;
+  font-style: italic;
+  font-display: swap;
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--colour-med);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--colour-dark);
+}
+
+html,
+body {
+  overscroll-behavior: none;
+  height: 100%;
+}
+
+canvas {
+  z-index: 2;
+}
+
+.flexbox {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.flex-h {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-v {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.overlay-element {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  justify-content: center;
+  width: 70px;
+  height: 70px;
+  border-radius: 15%;
+  border: 6px solid var(--colour-dark);
+  background-color: var(--colour-black);
+  color: var(--colour-light);
+  box-sizing: border-box;
+  transition: transform 0.2s ease;
+}
+
+.f-toilet .overlay-element {
+  border-color: var(--ftoilet-dark);
+  background-color: var(--ftoilet-light);
+}
+
+.f-toilet * {
+  scrollbar-color: var(--ftoilet-dark) var(--ftoilet-white);
+}
+
+.f-toilet *::-webkit-scrollbar-track {
+  background: var(--ftoilet-white);
+}
+
+.f-toilet *::-webkit-scrollbar-thumb {
+  background: var(--ftoilet-dark);
+}
+
+.m-toilet .overlay-element {
+  border-color: var(--mtoilet-dark);
+  background-color: var(--mtoilet-light);
+}
+
+.m-toilet * {
+  scrollbar-color: var(--mtoilet-dark) var(--mtoilet-white);
+}
+
+.m-toilet *::-webkit-scrollbar-track {
+  background: var(--mtoilet-white);
+}
+
+.m-toilet *::-webkit-scrollbar-thumb {
+  background: var(--mtoilet-dark);
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: auto;
+}
+
+button.overlay-element {
+  font-size: 1.4rem;
+  font-weight: 600;
+  transition:
+    border-color var(--trans-time) ease,
+    background-color var(--trans-time) ease,
+    transform 0.2s ease;
+}
+
+.overlay-element:hover {
+  transform: scale(1.1);
+}
+
+img {
+  user-drag: none;
+  -webkit-user-select: none;
+  -webkit-user-drag: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+hr {
+  border: 1px dashed var(--colour-dark);
+}

@@ -1,0 +1,244 @@
+<script>
+  import Cross from "$lib/assets/ui/cross.svelte";
+  import { fade, scale } from "svelte/transition";
+  import { getContext } from "svelte";
+  import { getScene } from "$lib/stores/worldState.svelte.js";
+
+  const scene = getScene();
+  const images = getContext("images");
+
+  let { infoOpen, closeInfo } = $props();
+</script>
+
+{#snippet sectionBreak(text, initialbreak = true)}
+  {#if initialbreak}
+    <br />
+  {/if}
+  <br />
+  <hr />
+  <br />
+  <em>{text}</em>
+  <br /><br />
+{/snippet}
+
+{#if infoOpen}
+  <dialog transition:fade={{ duration: 200 }} class="info-screen flex-v" onclick={closeInfo}>
+    <div
+      tabindex="-1"
+      aria-hidden="true"
+      transition:scale={{ delay: 0, duration: 400, start: 1.1, opacity: 0 }}
+      class:f-toilet={scene.currentState.scene === "fToilet"}
+      class:m-toilet={scene.currentState.scene === "mToilet"}
+      class="info-wrapper"
+      onclick={(e) => e.stopPropagation()}
+    >
+      <div class="info-div flex-v">
+        <div class="info-banner">
+          <img class="info-img" src={images["banner.webp"]} alt="info banner" />
+        </div>
+        <div class="scrollable info-content">
+          Welcome to <strong>SoftBridge Cafe</strong>! <br /><br /> Take your time to explore the café -
+          there are many interactables scattered about. You can get hints by clicking the number
+          counter at the <u>top</u> of the screen. I hope you enjoy your stay!
+          {@render sectionBreak("What is this?")}
+          This is SoftBridge Cafe. This project was built as a way to improve my skills and test my knowledge in 3D web development.
+          <br /><br />
+          It served as a great opportunity to practice, test, and reinforce my understanding of modern web technologies, specifically Svelte, SvelteKit, Threlte, Three.js, Theatre.js, and Blender for 3D modeling workflows.
+
+          {@render sectionBreak("If you liked this, check out my other works!")}
+          <div class="contact-grid">
+            <a class="overlay-element exit-link" href="https://github.com/Dpehect" target="_blank">
+              <img class="info-img" src={images["dp.webp"]} alt="info banner" />
+              Github <br />Profile
+            </a>
+            <a
+              class="overlay-element exit-link"
+              href="https://portfolio-2026-plum-pi.vercel.app/"
+              target="_blank"
+            >
+              <img class="info-img" src={images["port.webp"]} alt="info banner" />
+              Portfolio <br />Website
+            </a>
+          </div>
+        </div>
+      </div>
+      <button class="overlay-element out-button" onclick={closeInfo}>
+        <Cross />
+      </button>
+    </div>
+  </dialog>
+{/if}
+
+<style>
+  a:not(.overlay-element),
+  a:visited:not(.overlay-element) {
+    color: var(--colour-med);
+  }
+
+  .info-screen {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    color: var(--colour-white);
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  .info-wrapper {
+    position: absolute;
+    width: min(750px, 95%);
+    height: 85%;
+  }
+
+  .info-div {
+    height: 100%;
+    overflow: hidden;
+    gap: 1rem;
+    color: var(--colour-dark);
+    background-color: var(--colour-white);
+    border: 8px solid var(--c1);
+    border-radius: 20px;
+    justify-content: space-between;
+    padding-bottom: 1rem;
+    transition: border 3.8s ease;
+  }
+
+  .info-banner {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    border-bottom: 8px solid var(--c1);
+  }
+
+  .info-banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .info-banner a {
+    position: absolute;
+    left: 50%;
+    translate: -50% calc(50% + 4px);
+    bottom: 0;
+  }
+
+  .out-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    translate: 25% -25%;
+  }
+
+  .info-content {
+    font-size: 1.4rem;
+    margin-top: 2.5rem;
+    padding: 0 1rem 0.5rem;
+    width: calc(100% - 2rem);
+    overflow-y: auto;
+    flex-grow: 1;
+  }
+
+  .exit-link {
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    width: fit-content;
+    border-width: 4px;
+    border-radius: 15px;
+    font-size: 1.6rem;
+    cursor: pointer;
+    margin: 0 auto;
+  }
+
+  .contact-grid {
+    margin-top: -8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0 1rem;
+    gap: 2rem;
+    text-align: center;
+  }
+
+  .contact-grid .exit-link {
+    width: 100%;
+    height: auto;
+    font-size: 1.4rem;
+  }
+
+  .contact-grid img {
+    width: 90px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    margin-right: 1.5rem;
+    background-color: var(--colour-dull-black);
+  }
+
+  .info-div,
+  .info-banner {
+    --c0: var(--colour-black);
+    --c1: var(--colour-dark);
+  }
+
+  .f-toilet .info-div,
+  .f-toilet .info-banner {
+    --c0: var(--ftoilet-dark);
+    --c1: var(--ftoilet-light);
+  }
+
+  .m-toilet .info-div,
+  .m-toilet .info-banner {
+    --c0: var(--mtoilet-dark);
+    --c1: var(--mtoilet-light);
+  }
+
+  @media (max-width: 768px) {
+    .info-wrapper {
+      width: 100%;
+      height: 100%;
+    }
+
+    .info-wrapper .out-button {
+      translate: 0;
+      top: 5px;
+      right: 5px;
+      width: 60px;
+      height: 60px;
+    }
+
+    .info-div {
+      border: 0;
+      border-radius: 0;
+    }
+
+    .info-div .exit-link {
+      font-size: 1.3rem;
+      white-space: nowrap;
+    }
+
+    .info-banner {
+      height: 125px;
+    }
+
+    .info-content {
+      padding: 0 0.5rem 0.5rem 0.5rem;
+      width: calc(100% - 1rem);
+      font-size: 1.2rem;
+      overflow-x: hidden;
+    }
+
+    .contact-grid {
+      width: 100%;
+      padding: 0;
+      gap: 0.5rem;
+    }
+
+    .contact-grid img {
+      width: 50px;
+      margin-right: 0.5rem;
+    }
+
+    .contact-grid .overlay-element:hover {
+      transform: none;
+    }
+  }
+</style>
