@@ -1,58 +1,75 @@
 <script>
-  import Panzoom from "@panzoom/panzoom";
   import { getContext } from "svelte";
 
   const image = getContext("images");
 
-  let gridContainer = $state(null);
-
-  $effect(async () => {
-    if (!gridContainer) return;
-
-    const panzoom = Panzoom(gridContainer, {
-      contain: "outside",
-      startScale: 1.5,
-      minScale: 0.8,
-      maxScale: 3,
-    });
-    
-    const wheelHandler = (e) => panzoom.zoomWithWheel(e);
-    gridContainer.parentElement.addEventListener("wheel", wheelHandler);
-
-    return () => {
-      if (gridContainer && gridContainer.parentElement) {
-        gridContainer.parentElement.removeEventListener("wheel", wheelHandler);
-      }
-    };
-  });
-
   const polaroids = [
-    { src: "user_photo_1.jpg", rotate: -6, left: "12%", top: "15%" },
-    { src: "user_photo_2.jpg", rotate: 5, left: "42%", top: "10%" },
-    { src: "user_photo_3.jpg", rotate: -4, left: "72%", top: "18%" },
-    { src: "user_photo_4.jpg", rotate: 6, left: "27%", top: "52%" },
-    { src: "user_photo_5.jpg", rotate: -5, left: "57%", top: "48%" },
+    { src: "user_photo_1.jpg", rotate: -6, left: "80px", top: "70px" },
+    { src: "user_photo_2.jpg", rotate: 5, left: "310px", top: "40px" },
+    { src: "user_photo_3.jpg", rotate: -4, left: "540px", top: "90px" },
+    { src: "user_photo_4.jpg", rotate: 6, left: "770px", top: "50px" },
+    { src: "user_photo_5.jpg", rotate: -5, left: "1000px", top: "80px" },
   ];
+
+  let isDown = $state(false);
+  let startX = $state(0);
+  let scrollLeft = $state(0);
+  let parentEl = $state(null);
+
+  function handleMouseDown(e) {
+    if (e.button !== 0) return; // Only drag with left click
+    isDown = true;
+    startX = e.pageX - parentEl.offsetLeft;
+    scrollLeft = parentEl.scrollLeft;
+  }
+
+  function handleMouseLeave() {
+    isDown = false;
+  }
+
+  function handleMouseUp() {
+    isDown = false;
+  }
+
+  function handleMouseMove(e) {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - parentEl.offsetLeft;
+    const walk = (x - startX) * 1.5; // Drag scroll speed
+    parentEl.scrollLeft = scrollLeft - walk;
+  }
 </script>
 
-<div class="grid-div">
-  <div bind:this={gridContainer} class="photo-board">
-    <div class="wire-grid-vertical" style="left: 20%"></div>
-    <div class="wire-grid-vertical" style="left: 40%"></div>
-    <div class="wire-grid-vertical" style="left: 60%"></div>
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<div 
+  bind:this={parentEl}
+  class="grid-div" 
+  class:grabbing={isDown}
+  onmousedown={handleMouseDown}
+  onmouseleave={handleMouseLeave}
+  onmouseup={handleMouseUp}
+  onmousemove={handleMouseMove}
+>
+  <div class="photo-board">
+    <div class="wire-grid-vertical" style="left: 16%"></div>
+    <div class="wire-grid-vertical" style="left: 32%"></div>
+    <div class="wire-grid-vertical" style="left: 48%"></div>
+    <div class="wire-grid-vertical" style="left: 64%"></div>
     <div class="wire-grid-vertical" style="left: 80%"></div>
     <div class="wire-grid-horizontal" style="top: 25%"></div>
     <div class="wire-grid-horizontal" style="top: 50%"></div>
     <div class="wire-grid-horizontal" style="top: 75%"></div>
 
     {#each polaroids as photo}
+      <!-- svelte-ignore a11y_no_static_element_interactions -->
       <div 
         class="polaroid-wrapper" 
         style="left: {photo.left}; top: {photo.top}; transform: rotate({photo.rotate}deg);"
+        ondragstart={(e) => e.preventDefault()}
       >
         <div class="peg"></div>
         <div class="polaroid">
-          <img src={image[photo.src]} alt="Memory" />
+          <img src={image[photo.src]} alt="Memory" draggable="false" />
         </div>
       </div>
     {/each}
@@ -64,7 +81,8 @@
     position: relative;
     width: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
     background-color: #2b1814;
     background-image: 
       linear-gradient(335deg, #1b0c09 23px, transparent 23px),
@@ -74,17 +92,43 @@
     background-size: 58px 58px;
     background-position: 0px 2px, 4px 35px, 29px 31px, 34px 6px;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
+    cursor: grab;
+    user-select: none;
+    -webkit-overflow-scrolling: touch;
+    padding: 0 40px;
+  }
+
+  .grid-div.grabbing {
+    cursor: grabbing;
+  }
+
+  /* Custom scrollbar styling */
+  .grid-div::-webkit-scrollbar {
+    height: 8px;
+  }
+  .grid-div::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .grid-div::-webkit-scrollbar-thumb {
+    background: rgba(181, 137, 61, 0.4);
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+  .grid-div::-webkit-scrollbar-thumb:hover {
+    background: rgba(181, 137, 61, 0.7);
   }
 
   .photo-board {
     position: relative;
-    width: 900px;
-    height: 600px;
+    width: 1250px;
+    height: 450px;
     background: rgba(0, 0, 0, 0.15);
     border: 4px solid #1a0f0d;
     box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.6);
+    flex-shrink: 0;
+    margin: auto;
   }
 
   .wire-grid-vertical {
@@ -112,7 +156,6 @@
     flex-direction: column;
     align-items: center;
     transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), z-index 0.2s ease;
-    cursor: grab;
     will-change: transform;
   }
 
@@ -146,5 +189,7 @@
     object-fit: cover;
     aspect-ratio: 1;
     border: 1px solid rgba(0, 0, 0, 0.06);
+    user-select: none;
+    pointer-events: none;
   }
 </style>
