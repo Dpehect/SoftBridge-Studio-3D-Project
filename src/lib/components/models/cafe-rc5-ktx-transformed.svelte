@@ -20,7 +20,7 @@
 
   let { fallback, error, children, ref = $bindable(), ...props } = $props();
   import { CircleGeometry, TextureLoader, ClampToEdgeWrapping, LinearFilter } from "three";
-  import { onMount } from "svelte";
+  import { getContext, onMount } from "svelte";
   import { Tween } from "svelte/motion";
   import { cubicInOut, linear } from "svelte/easing";
   import { getScene } from "$lib/stores/worldState.svelte.js";
@@ -28,6 +28,7 @@
   import Cat from "./cat-ktx-transformed.svelte";
 
   const scene = getScene();
+  const images = getContext("images");
 
   const gltf = load();
 
@@ -177,6 +178,17 @@
       tex.magFilter = LinearFilter;
 
       return tex;
+    });
+
+    // Load fox texture and replace the cat poster on the wall dynamically
+    const foxTex = loader.load(images["dp.png"]);
+    foxTex.colorSpace = "srgb";
+    foxTex.flipY = false;
+    gltf.then((resolvedGltf) => {
+      if (resolvedGltf.materials && resolvedGltf.materials.One) {
+        resolvedGltf.materials.One.map = foxTex;
+        resolvedGltf.materials.One.needsUpdate = true;
+      }
     });
   });
 

@@ -116,12 +116,7 @@
     object-fit: cover;
   }
 
-  .info-banner a {
-    position: absolute;
-    left: 50%;
-    translate: -50% calc(50% + 4px);
-    bottom: 0;
-  }
+
 
   .out-button {
     position: absolute;
