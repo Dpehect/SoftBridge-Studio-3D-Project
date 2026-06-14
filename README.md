@@ -1,5 +1,5 @@
 # SoftBridge Cafe - Interactive 3D Web Experience
-
+Live at https://soft-bridge-studio-3-d-project.vercel.app/
 ## Project Purpose
 SoftBridge Cafe is a high-performance, immersive 3D web application designed as an interactive exploration of a virtual café space. The project serves to demonstrate advanced front-end integration of declarative 3D graphics in modern web frameworks, focusing on web-optimized asset delivery, timeline-based animation, spatial sound design, and smooth user interactions on both desktop and mobile platforms.
 
