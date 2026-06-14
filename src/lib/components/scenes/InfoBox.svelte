@@ -48,7 +48,7 @@
           {@render sectionBreak("If you liked this, check out my other works!")}
           <div class="contact-grid">
             <a class="overlay-element exit-link" href="https://github.com/Dpehect" target="_blank">
-              <img class="info-img" src={images["dp.webp"]} alt="info banner" />
+              <img class="info-img" src={images["dp.png"]} alt="info banner" />
               Github <br />Profile
             </a>
             <a
