@@ -27,18 +27,11 @@
   });
 
   const polaroids = [
-    { src: "user_photo_1.jpg", rotate: -5, left: "8%", top: "8%" },
-    { src: "user_photo_2.jpg", rotate: 4, left: "32%", top: "6%" },
-    { src: "user_photo_3.jpg", rotate: -3, left: "56%", top: "10%" },
-    { src: "user_photo_4.jpg", rotate: 6, left: "78%", top: "7%" },
-    { src: "user_photo_2.jpg", rotate: 3, left: "12%", top: "40%" },
-    { src: "user_photo_3.jpg", rotate: -6, left: "35%", top: "38%" },
-    { src: "user_photo_4.jpg", rotate: -2, left: "58%", top: "44%" },
-    { src: "user_photo_1.jpg", rotate: 5, left: "81%", top: "42%" },
-    { src: "user_photo_4.jpg", rotate: -4, left: "9%", top: "72%" },
-    { src: "user_photo_1.jpg", rotate: 2, left: "33%", top: "74%" },
-    { src: "user_photo_2.jpg", rotate: -5, left: "55%", top: "70%" },
-    { src: "user_photo_3.jpg", rotate: 4, left: "77%", top: "75%" },
+    { src: "user_photo_1.jpg", rotate: -6, left: "12%", top: "15%" },
+    { src: "user_photo_2.jpg", rotate: 5, left: "42%", top: "10%" },
+    { src: "user_photo_3.jpg", rotate: -4, left: "72%", top: "18%" },
+    { src: "user_photo_4.jpg", rotate: 6, left: "27%", top: "52%" },
+    { src: "user_photo_5.jpg", rotate: -5, left: "57%", top: "48%" },
   ];
 </script>
 
@@ -114,7 +107,7 @@
 
   .polaroid-wrapper {
     position: absolute;
-    width: 110px;
+    width: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
